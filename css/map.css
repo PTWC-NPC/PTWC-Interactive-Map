@@ -1,0 +1,90 @@
+/* Look and feel follow the current PTWC website map (qgis2web export by M. Lambrecht). */
+html, body, #map { width: 100%; height: 100%; margin: 0; padding: 0; }
+body { font-family: "Helvetica Neue", Arial, Helvetica, sans-serif; }
+#map { background: #e8eaed; }
+
+/* Buttons on the left */
+.leaflet-bar, .btn-card {
+  border: none !important;
+  border-radius: 8px !important;
+  box-shadow: 0 3px 14px rgba(0, 0, 0, .25) !important;
+  overflow: hidden;
+}
+.leaflet-bar a { background: #f8f8f8; color: #222; }
+.btn-card {
+  background: #fff; padding: 9px 14px; font-size: 14px; font-weight: 600; color: #222;
+  cursor: pointer; display: flex; align-items: center; gap: 8px; white-space: nowrap;
+}
+.btn-card:hover { background: #f2f2f2; }
+.btn-card i { color: #2b6d5c; }
+
+/* Layers panel (right) */
+.layers-card {
+  background: #fff; border-radius: 12px; box-shadow: 0 8px 32px rgba(0, 0, 0, .18);
+  width: 250px; max-height: calc(100vh - 120px); display: flex; flex-direction: column; font-size: 13px;
+}
+.layers-card.collapsed { width: auto; }
+.layers-card.collapsed .layers-body { display: none; }
+.layers-head {
+  display: flex; align-items: center; justify-content: space-between; padding: 12px 14px 8px 18px;
+}
+.layers-head h2 { margin: 0; font-size: 15px; color: #2c3e50; flex: 1; text-align: center; }
+.layers-card.collapsed .layers-head h2 { display: none; }
+.collapse-btn { border: none; background: #f4f4f4; border-radius: 6px; width: 30px; height: 28px; font-size: 16px; cursor: pointer; }
+.layers-card.collapsed .collapse-btn { transform: rotate(180deg); }
+.layers-body { overflow-y: auto; padding: 0 10px 12px 14px; }
+.search { width: 100%; box-sizing: border-box; padding: 7px 9px; border: 1px solid #ddd; border-radius: 6px; font-size: 13px; margin: 2px 0 8px; }
+.results { margin: -4px 0 8px; }
+.results div { padding: 5px 6px; border-radius: 5px; cursor: pointer; line-height: 1.25; }
+.results div:hover { background: #f3f3f3; }
+.results small { color: #777; display: block; }
+.section { margin-top: 6px; }
+.section > summary { cursor: pointer; font-weight: 700; color: #555; font-size: 11.5px; text-transform: uppercase; letter-spacing: .04em; padding: 6px 2px; list-style: none; }
+.section > summary::before { content: "\25B8"; display: inline-block; width: 12px; transition: transform .15s; }
+.section[open] > summary::before { transform: rotate(90deg); }
+.lyr { display: flex; align-items: center; gap: 9px; padding: 4px 2px; cursor: pointer; line-height: 1.2; }
+.lyr input { margin: 0; width: 15px; height: 15px; flex: none; }
+.lyr .sw { width: 18px; height: 16px; flex: none; border-radius: 2px; box-sizing: border-box; }
+.lyr .sw.line { height: 0; border-top-width: 3px; border-top-style: solid; }
+.lyr .sw.dot { width: 12px; height: 12px; border-radius: 50%; margin: 0 3px; }
+.lyr .n { margin-left: auto; color: #999; font-size: 11px; }
+
+/* Popups */
+.leaflet-popup-content-wrapper { border-radius: 10px; }
+.leaflet-popup-content { margin: 12px 14px; font-size: 12.5px; max-width: 320px; }
+.leaflet-popup-content table { border-collapse: collapse; }
+.leaflet-popup-content th { text-align: left; vertical-align: top; padding: 3px 12px 3px 0; color: #222; font-weight: 700; white-space: nowrap; }
+.leaflet-popup-content td { vertical-align: top; padding: 3px 0; color: #333; word-break: break-word; }
+.leaflet-popup-content .deadline td { color: #b02a1e; font-weight: 700; }
+.leaflet-popup-content a { color: #1a6aa8; }
+
+/* Town labels */
+.town-label { background: none; border: none; box-shadow: none; font-size: 13px; color: #111; font-weight: 500;
+  text-shadow: 0 0 3px #fff, 0 0 3px #fff, 0 0 2px #fff; padding: 0; }
+.town-label::before { display: none; }
+
+/* Info button (bottom right) */
+.about { background: rgba(248, 248, 248, .95); border-radius: 50%; width: 40px; height: 40px; display: flex;
+  align-items: center; justify-content: center; font-size: 18px; box-shadow: 0 8px 32px rgba(0, 0, 0, .15); cursor: pointer; }
+.about.open { border-radius: 16px; width: 330px; height: auto; display: block; padding: 16px 18px; font-size: 13px; cursor: default; }
+.about h3 { margin: 0 0 8px; font-size: 15px; }
+.about p { margin: 6px 0; line-height: 1.4; }
+.about .disclaimer { background: rgba(255, 193, 7, .12); border-radius: 8px; padding: 8px 10px; margin-top: 8px; }
+
+@media (max-width: 600px) {
+  .layers-card { width: 210px; }
+  .btn-card span { display: none; }
+  .about.open { width: 260px; }
+}
+
+/* RIPL status section */
+.phase { font-size: 11px; color: #888; margin: 8px 0 1px 2px; font-style: italic; }
+.sec-tools { display: flex; gap: 6px; margin: 0 0 4px 2px; }
+.sec-tools button { border: 1px solid #ddd; background: #f8f8f8; border-radius: 5px; font-size: 11px; padding: 3px 8px; cursor: pointer; }
+.sec-tools button:hover { background: #eee; }
+.note { font-size: 11px; color: #777; margin: 0 0 4px 2px; line-height: 1.3; }
+.lyr .sw.live { background: repeating-linear-gradient(135deg, #adb5bd 0 2px, #f1f3f5 2px 5px); border: 1px solid #868e96; }
+.leaflet-popup-content hr { border: none; border-top: 1px solid #e5e5e5; margin: 8px 0; }
+.leaflet-popup-content .meta th, .leaflet-popup-content .meta td { color: #888; font-weight: 400; font-size: 11.5px; }
+.leaflet-popup-content .discrepancy td { color: #9a5b00; font-style: italic; }
+.leaflet-popup-content .discrepancy th { color: #9a5b00; }
