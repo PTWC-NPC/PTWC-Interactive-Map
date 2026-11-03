@@ -305,6 +305,45 @@ const sq = (fill, stroke) => `<span class="sw" style="background:${fill === "url
 const lineSw = c => `<span class="sw line" style="border-top-color:${c}"></span>`;
 const dotSw = (f, s) => `<span class="sw dot" style="background:${f};border:2px solid ${s}"></span>`;
 
+// ---------------------------------------------------------------- onshore / offshore / oil and gas filters
+// Four ticks that apply to every mining, prospecting and sea concession layer below. Each record carries
+// Zone (Onshore or Offshore) and Commodity group (Oil and gas, or Minerals and other) from
+// tools/build_public_map.py. A layer that fails the ticks is taken out of its group, so counts follow.
+const filterOn = { Onshore: true, Offshore: true, "Oil and gas": true, "Minerals and other": true };
+const filtered = [];  // { l: map layer, g: the group it sits in, p: its record properties }
+const passes = p => filterOn[p.Zone || "Onshore"] && filterOn[p["Commodity group"] || "Minerals and other"];
+const addFiltered = (l, g, p) => { filtered.push({ l, g, p }); g.addLayer(l); };
+const filterSection = section("Offshore, onshore, oil and gas", true, false);
+note(filterSection, "These ticks apply to every mining, prospecting and sea concession layer below. To see only offshore rights, untick Onshore. To take oil and gas out of the view, untick Oil and gas.");
+const filterRows = {};
+[["Onshore", "Onshore"], ["Offshore", "Offshore"], ["Minerals and other", "Minerals and other developments"], ["Oil and gas", "Oil and gas"]].forEach(([k, label]) => {
+  filterRows[k] = row(filterSection, label, "", true, on => { filterOn[k] = on; applyFilters(); });
+});
+note(filterSection, "Minerals and other developments: diamonds, heavy minerals, sand, rock and the energy or industrial projects PTWC follows.");
+const filterTools = document.createElement("div");
+filterTools.className = "sec-tools";
+filterTools.innerHTML = '<button type="button" data-p="off">Only offshore</button><button type="button" data-p="on">Only onshore</button><button type="button" data-p="all">Show everything</button>';
+filterTools.addEventListener("click", e => {
+  const b = e.target.closest("button"); if (!b) return;
+  const st = { off: [false, true], on: [true, false], all: [true, true] }[b.dataset.p];
+  [["Onshore", st[0]], ["Offshore", st[1]], ["Minerals and other", true], ["Oil and gas", true]].forEach(([k, v]) => {
+    filterOn[k] = v; filterRows[k].querySelector("input").checked = v;
+  });
+  applyFilters();
+});
+filterSection.append(filterTools);
+function applyFilters() {
+  filtered.forEach(f => {
+    const show = passes(f.p), has = f.g.hasLayer(f.l);
+    if (show && !has) f.g.addLayer(f.l); else if (!show && has) f.g.removeLayer(f.l);
+  });
+  updateCounts();
+}
+// a search hit that the ticks have hidden switches its own tick back on
+const unfilter = p => [p.Zone || "Onshore", p["Commodity group"] || "Minerals and other"].forEach(k => {
+  if (!filterOn[k]) filterRows[k].querySelector("input").click();
+});
+
 // ---------------------------------------------------------------- concessions
 const searchIndex = [];
 // One record per application or right: the PTWC register reconciled with the DMPR Mining Licence System
@@ -382,10 +421,10 @@ function addInactive(f) {
   L.geoJSON(f, { style }).eachLayer(l => {
     l.bindPopup(concessionPopup(f.properties), { maxHeight: 400 });
     l.on({ mouseover: highlight, mouseout: () => l.setStyle(style) });
-    it.layer.addLayer(l);
+    addFiltered(l, it.layer, f.properties);
     searchIndex.push({ text: [f.properties.Code, f.properties["Rights Holder"], f.properties.Location, f.properties.Farms, f.properties["Resource Targeted"], f.properties.id].join(" ").toLowerCase(),
       title: f.properties["Rights Holder"] || f.properties.Code, sub: `Inactive ${it.t.toLowerCase()} · ${f.properties.Code || ""}`, layer: l,
-      show: () => { const b = it.row.querySelector("input"); if (!b.checked) b.click(); } });
+      show: () => { unfilter(f.properties); const b = it.row.querySelector("input"); if (!b.checked) b.click(); } });
   });
 }
 
@@ -403,9 +442,9 @@ getJSON("concessions").then(data => {
       l.on({ mouseover: highlight, mouseout: () => l.setStyle(styleCat(c)) });
       searchIndex.push({ text: [f.properties.Code, f.properties["Rights Holder"], f.properties.Location, f.properties.Farms, f.properties["Resource Targeted"], f.properties.id].join(" ").toLowerCase(),
         title: f.properties["Rights Holder"] || f.properties.Code, sub: `${f.properties.Status} · ${f.properties.Code || ""}`, layer: l,
-        show: () => { if (!map.hasLayer(catLayers[c.name])) c.row.querySelector("input").click(); } });
+        show: () => { unfilter(f.properties); if (!map.hasLayer(catLayers[c.name])) c.row.querySelector("input").click(); } });
     });
-    catLayers[c.name].addLayer(layer);
+    addFiltered(layer, catLayers[c.name], f.properties);
     if (f.properties.Source === "DMPR") return;  // RIPL stages are PTWC's; DMPR-only records have none
     const r = RIPL.find(x => !x.phase && x.s === (f.properties.Stage || "")) || RIPL.find(x => x.s === "");
     const rl = L.geoJSON(f, { style: () => styleRipl(r) });
@@ -413,8 +452,11 @@ getJSON("concessions").then(data => {
       l.bindPopup(concessionPopup(f.properties), { maxHeight: 400 });
       l.on({ mouseover: highlight, mouseout: () => l.setStyle(styleRipl(r)) });
     });
-    riplLayers[r.s].addLayer(rl);
+    addFiltered(rl, riplLayers[r.s], f.properties);
   });
+  const tot = { Onshore: 0, Offshore: 0, "Oil and gas": 0, "Minerals and other": 0 };
+  data.features.forEach(f => { tot[f.properties.Zone || "Onshore"]++; tot[f.properties["Commodity group"] || "Minerals and other"]++; });
+  Object.keys(tot).forEach(k => { filterRows[k].querySelector(".n").textContent = tot[k]; });
   // counts; hide statuses with no areas, and phase headings with nothing under them
   let phase = null, phaseHasRows = false;
   const closePhase = () => { if (phase) phase.el.style.display = phaseHasRows ? "" : "none"; };
@@ -460,7 +502,7 @@ getJSON("dmpr/sea_concessions").then(data => {
     L.geoJSON(f, { style }).eachLayer(l => {
       l.bindPopup(genericPopup("Sea concession", p), { maxHeight: 300 });
       l.on({ mouseover: highlight, mouseout: () => l.setStyle(style) });
-      seaLayers[sz.z].addLayer(l);
+      addFiltered(l, seaLayers[sz.z], { Zone: "Offshore", "Commodity group": "Minerals and other" });
     });
   });
   SEA_ALL.forEach(sz => {
@@ -479,15 +521,20 @@ const bgLayers = [
   { file: "south_africa", label: "South Africa", on: true, sw: sq("rgb(164,180,132)", "rgb(35,35,35)") },
   { file: "africa", label: "Africa outline", on: true, sw: sq("rgb(191,191,191)", "rgb(124,124,124)") },
 ];
-const MAJOR_TOWNS = new Set(["Cape Town", "Saldanha", "Vredendal", "Springbok", "Port Nolloth", "Lamberts Bay",
-  "Upington", "Kimberley", "Bloemfontein", "Johannesburg", "Gqeberha", "Mossel Bay", "Alexander Bay", "Hondeklip Bay"]);
-function townLabels() {
-  const z = map.getZoom();
-  document.querySelectorAll(".town-label").forEach(el => {
-    el.style.display = z >= 8 || (z >= 6 && MAJOR_TOWNS.has(el.textContent)) ? "" : "none";
+// Town dots and names show together from each town's own minimum zoom (`z` in data/towns.geojson,
+// built by tools/build_more_towns.py), so the map stays readable zoomed out.
+const townLabels = () => {};
+const townMarkers = [];  // { m: marker, z: minimum zoom }
+let townGroup = null;
+function townTiers() {
+  if (!townGroup) return;
+  const zoom = map.getZoom();
+  townMarkers.forEach(({ m, z }) => {
+    const want = zoom >= z, has = townGroup.hasLayer(m);
+    if (want && !has) townGroup.addLayer(m); else if (!want && has) townGroup.removeLayer(m);
   });
 }
-map.on("zoomend", townLabels);
+map.on("zoomend", () => { townTiers(); townLabels(); });
 const BG_STYLE = {
   africa: { pane: "africa", color: "rgb(124,124,124)", weight: 1, fillColor: "rgb(191,191,191)", fillOpacity: 1, interactive: false },
   south_africa: { pane: "sa", color: "rgb(35,35,35)", weight: 1, fillColor: "rgb(164,180,132)", fillOpacity: 1, interactive: false },
@@ -499,10 +546,15 @@ bgLayers.forEach(b => {
   const load = async () => {
     if (layer) return layer;
     const data = await getJSON(b.file);
-    layer = b.file === "towns"
-      ? L.geoJSON(data, { pointToLayer: (f, ll) => L.circleMarker(ll, { pane: "towns", radius: 4.8, color: "rgb(35,35,35)", weight: 2, fillColor: "#fff", fillOpacity: 1, interactive: false })
-          .bindTooltip(f.properties.name, { permanent: true, direction: "right", offset: [6, 0], className: "town-label", pane: "towns" }) })
-      : L.geoJSON(data, { style: BG_STYLE[b.file] });
+    if (b.file === "towns") {
+      townGroup = layer = L.featureGroup();
+      data.features.forEach(f => {
+        const m = L.circleMarker([f.geometry.coordinates[1], f.geometry.coordinates[0]], { pane: "towns", radius: 4.8, color: "rgb(35,35,35)", weight: 2, fillColor: "#fff", fillOpacity: 1, interactive: false })
+          .bindTooltip(f.properties.name, { permanent: true, direction: "right", offset: [6, 0], className: "town-label", pane: "towns" });
+        townMarkers.push({ m, z: f.properties.z == null ? 0 : f.properties.z });
+      });
+      townTiers();
+    } else layer = L.geoJSON(data, { style: BG_STYLE[b.file] });
     if (b.file === "africa" || b.file === "south_africa") {
       landLayers[b.file] = layer;
       if (currentBase) layer.setStyle({ fillOpacity: 0 });
@@ -665,3 +717,13 @@ map.on("moveend", () => {
 });
 const hadHash = restoreView();
 if (!hadHash) map.setView([-31.2, 18.3], 8);
+
+
+// Layer counts in the panel follow the onshore / offshore / oil and gas ticks (rows are not hidden or shown here).
+function updateCounts() {
+  const n = (row, group) => { if (row) row.querySelector(".n").textContent = group.getLayers().length; };
+  CATS.forEach(c => n(c.row, catLayers[c.name]));
+  RIPL.forEach(r => { if (!r.phase) n(r.row, riplLayers[r.s]); });
+  INACTIVE_TYPES.forEach(it => n(it.row, it.layer));
+  SEA_ALL.forEach(sz => n(sz.row, seaLayers[sz.z]));
+}
