@@ -13,10 +13,11 @@ Department of Environmental and Geographical Science, University of Cape Town).
 | `index.html` | The page. Opens the map. |
 | `js/map.js` | Layers, colours, popups, search and buttons. |
 | `css/map.css` | Styling. |
-| `data/concessions.geojson` | Mining rights, permits and applications: the PTWC register reconciled with every Western Cape record in the DMPR Mining Licence System, one record each. |
+| `data/concessions.geojson` | Mining rights, permits and applications: the PTWC register reconciled with every Western Cape record in the DMPR Mining Licence System, one record each. Each carries `Zone` (Onshore or Offshore: offshore when under half of the area is on land, or the register says Offshore) and `Commodity group` (Oil and gas, or Minerals and other); the four ticks at the top of the layer panel filter every mining layer on them. |
 | `data/africa.geojson`, `south_africa.geojson`, `rivers.geojson` | Background layers (Natural Earth, public domain). |
-| `data/towns.geojson` | Town positions (OpenStreetMap). |
+| `data/towns.geojson` | Town positions: 36 West Coast and Namakwa towns plus a short list of cities and second-tier towns for South Africa (OpenStreetMap). Each has `z`, the lowest zoom at which it shows (`tools/build_more_towns.py`). |
 | `data/dmpr/` | DMPR Mining Licence System layers (`tools/build_dmpr_layers.py`): sea concessions and national protected areas, buffers, heritage, defence, aviation, SKA, Eskom, rail, pipelines and municipal boundaries. |
+| `data/biodiversity/` | Critical Biodiversity Areas (CBA1, CBA2) and Ecological Support Areas (ESA1, ESA2) for the Western and Northern Cape, simplified from the SANBI Biodiversity GIS downloads (CapeNature 2023 Western Cape Biodiversity Spatial Plan, Nov 2025; Northern Cape CBA map 2024). CC BY-NC-SA 4.0: credit SANBI and the data partners, non-commercial, share alike (`tools/build_biodiversity_layers.py`). |
 | `data/eez.geojson` | South African EEZ (DMPR). |
 
 ## How the data is updated

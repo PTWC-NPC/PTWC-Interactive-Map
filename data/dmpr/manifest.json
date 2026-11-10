@@ -1,10 +1,10 @@
 {
- "updated": "2026-10-28",
+ "updated": "2026-11-09",
  "source": "https://gis-mininglicense.dmpr.gov.za/arcgis/rest/services/indwe/indweOp/MapServer",
  "layers": {
-  "applications": 129,
+  "applications": 131,
   "rights_permits": 323,
-  "inactive_rights_permits": 579,
+  "inactive_rights_permits": 580,
   "sea_concessions": 85,
   "ramsar": 31,
   "botanical_garden": 10,

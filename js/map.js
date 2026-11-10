@@ -481,8 +481,42 @@ getJSON("concessions").then(data => {
   });
 });
 
-// ---------------------------------------------------------------- DMPR sea concessions (off by default)
+// ---------------------------------------------------------------- biodiversity priority areas (off by default)
+// Critical Biodiversity Areas and Ecological Support Areas for the Western Cape (CapeNature's 2023
+// Western Cape Biodiversity Spatial Plan, Nov 2025 update) and the Northern Cape (2024). Simplified and dissolved by
+// tools/build_biodiversity_layers.py: zoom in and use the source datasets for parcel-level work.
+const BIO = [
+  { file: "CBA1", label: "Critical Biodiversity Areas 1 (natural)", color: "#2b8a3e",
+    text: "Natural areas required to meet biodiversity targets for species, ecosystems and ecological processes. Maintain in a natural or near-natural state, with no further loss of natural habitat." },
+  { file: "CBA2", label: "Critical Biodiversity Areas 2 (degraded)", color: "#82c91e",
+    text: "Degraded or secondary areas still required to meet biodiversity targets. Rehabilitate and maintain; only low-impact, biodiversity-sensitive land uses are appropriate." },
+  { file: "ESA1", label: "Ecological Support Areas 1 (natural)", color: "#1c7ed6",
+    text: "Not essential for biodiversity targets, but they support the functioning of protected areas and Critical Biodiversity Areas and deliver ecosystem services (rivers, wetlands, groundwater sources and corridors). Keep functional and near-natural." },
+  { file: "ESA2", label: "Ecological Support Areas 2 (restore)", color: "#74c0fc",
+    text: "Ecological Support Areas now in a degraded state, to be restored from other land use (Western Cape only)." },
+];
 const alpha = (hex, a) => hex + Math.round(a * 255).toString(16).padStart(2, "0");
+const bioSection = section("Biodiversity priority areas (SANBI)", false);
+pane("bio", 410);
+note(bioSection, "Critical Biodiversity Areas (CBA) and Ecological Support Areas (ESA) for the whole Western Cape and the Northern Cape. Data: CapeNature and the Northern Cape Department of Agriculture, Environmental Affairs, Rural Development and Land Reform, from the South African National Biodiversity Institute (SANBI) Biodiversity GIS (CC BY-NC-SA 4.0). Simplified for the web: use the source data for site-level work.");
+BIO.forEach(b => {
+  let layer;
+  const r = row(bioSection, b.label, sq(alpha(b.color, .45), b.color), false, async on => {
+    if (!layer) {
+      const data = await getJSON("biodiversity/" + b.file);
+      layer = L.geoJSON(data, {
+        attribution: "Biodiversity data: CapeNature, NC DAEARDLR via SANBI Biodiversity GIS (CC BY-NC-SA 4.0)",
+        style: { pane: "bio", color: b.color, weight: .6, fillColor: b.color, fillOpacity: .45 },
+        onEachFeature: (f, l) => l.bindPopup(genericPopup(b.label, { Description: b.text, Source:
+          (f.properties.Province === "NC" ? "Northern Cape CBA Map 2024 (Northern Cape Department of Agriculture, Environmental Affairs, Rural Development and Land Reform)"
+            : "2023 Western Cape Biodiversity Spatial Plan, updated Nov 2025 (CapeNature)") + ", from SANBI's publicly available Biodiversity GIS data (CC BY-NC-SA 4.0)" }), { maxHeight: 300 }),
+      });
+    }
+    on ? layer.addTo(map) : layer.remove();
+  });
+});
+
+// ---------------------------------------------------------------- DMPR sea concessions (off by default)
 const dmprSection = section("Sea concessions (DMPR)", false);
 // Sea concessions (marine diamonds), grouped by zone: the letter at the end of the concession number
 pane("sea", 440.5);
@@ -689,6 +723,12 @@ const About = L.Control.extend({
         Layers marked "zoom" are drawn live from the DMPR server. The DMPR service credits the geology to the
         Council for Geoscience (1:1 000 000 Geological Map of South Africa, 2019) and the municipal boundaries to
         the Municipal Demarcation Board (2018).</p>
+        <p>Biodiversity priority areas (Critical Biodiversity Areas and Ecological Support Areas): data made publicly
+        available by the South African National Biodiversity Institute (SANBI) on its Biodiversity GIS website
+        (bgis.sanbi.org), licensed CC BY-NC-SA 4.0. Western Cape: 2023 Western Cape Biodiversity Spatial Plan, updated
+        November 2025 (CapeNature). Northern Cape: Critical Biodiversity Areas Map 2024 (Northern Cape Department of
+        Agriculture, Environmental Affairs, Rural Development and Land Reform). Simplified for display by Protect the
+        West Coast; use the source data for site-level decisions.</p>
         <p>Background: Natural Earth. Town positions: &copy; OpenStreetMap contributors.</p>
         <p>Original map design and data: One Ocean Hub Research Group, Department of Environmental and
         Geographical Science, University of Cape Town (M. Lambrecht). Further developed by Protect the West Coast.</p>
