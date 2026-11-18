@@ -6,17 +6,17 @@
   "rights_permits": 323,
   "inactive_rights_permits": 580,
   "sea_concessions": 85,
-  "ramsar": 31,
+  "ramsar": 32,
   "botanical_garden": 10,
   "biosphere_reserve": 10,
   "world_heritage": 9,
   "national_park": 22,
-  "nature_reserve": 1449,
-  "forest_nature_reserve": 57,
+  "nature_reserve": 1524,
+  "forest_nature_reserve": 59,
   "forest_wilderness": 12,
   "marine_protected_area": 42,
   "mountain_catchment": 16,
-  "protected_environment": 67,
+  "protected_environment": 70,
   "special_nature_reserve": 2,
   "tfca": 20,
   "buf_world_heritage": 1,
@@ -49,5 +49,23 @@
   "provinces": 9,
   "district_municipalities": 52,
   "local_municipalities": 213
+ },
+ "dfffe_protected_areas": {
+  "source": "https://dffeportal.environment.gov.za/hosting/rest/services/PACA",
+  "retrieved": "2026-11-18",
+  "layers": [
+   "world_heritage",
+   "national_park",
+   "nature_reserve",
+   "forest_nature_reserve",
+   "forest_wilderness",
+   "marine_protected_area",
+   "mountain_catchment",
+   "protected_environment",
+   "special_nature_reserve",
+   "ramsar",
+   "botanical_garden",
+   "biosphere_reserve"
+  ]
  }
 }

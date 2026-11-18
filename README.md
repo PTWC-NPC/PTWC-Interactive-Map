@@ -1,4 +1,4 @@
-# West Coast Mining Map
+# PTWC Interactive Map
 
 Interactive map of prospecting, mining and related development applications on the West Coast and in
 Namakwa, published by [Protect the West Coast](https://protectthewestcoast.org/).
@@ -17,7 +17,10 @@ Department of Environmental and Geographical Science, University of Cape Town).
 | `data/africa.geojson`, `south_africa.geojson`, `rivers.geojson` | Background layers (Natural Earth, public domain). |
 | `data/towns.geojson` | Town positions: 36 West Coast and Namakwa towns plus a short list of cities and second-tier towns for South Africa (OpenStreetMap). Each has `z`, the lowest zoom at which it shows (`tools/build_more_towns.py`). |
 | `data/dmpr/` | DMPR Mining Licence System layers (`tools/build_dmpr_layers.py`): sea concessions and national protected areas, buffers, heritage, defence, aviation, SKA, Eskom, rail, pipelines and municipal boundaries. |
-| `data/biodiversity/` | Critical Biodiversity Areas (CBA1, CBA2) and Ecological Support Areas (ESA1, ESA2) for the Western and Northern Cape, simplified from the SANBI Biodiversity GIS downloads (CapeNature 2023 Western Cape Biodiversity Spatial Plan, Nov 2025; Northern Cape CBA map 2024). CC BY-NC-SA 4.0: credit SANBI and the data partners, non-commercial, share alike (`tools/build_biodiversity_layers.py`). |
+| `data/biodiversity/` | Critical Biodiversity Areas (CBA1, CBA2) and Ecological Support Areas (ESA1, ESA2) for the Western and Northern Cape, simplified from the SANBI Biodiversity GIS downloads (CapeNature 2023 Western Cape Biodiversity Spatial Plan, Nov 2025; Northern Cape CBA map 2024). Credited in SANBI's citation style (see `CITE_WC`, `CITE_NC` in `js/map.js`; wording awaiting SANBI's confirmation). Built by `tools/build_biodiversity_layers.py`. |
+| `data/geology/` | Geological units of the 1:1 million geological map (Council for Geoscience, 2019) from the DMPR service layer 92, grouped into rock-type classes and coloured (`tools/build_geology_layer.py`; 16,417 polygons, 8.7 MB, about 1.6 MB gzipped). Rock types only, no mineral data. |
+| `data/marine/` | Marine Critical Biodiversity Areas (Natural, Restore) and Ecological Support Areas from the National Coastal and Marine CBA Map v1.2 (2022), simplified (`tools/build_marine_cba.py`). Credit: `CITE_MARINE` in `js/map.js`. |
+| `data/renewable/` | Renewable energy EIA applications (2,578 projects) from the DFFE public service, simplified (`tools/build_renewable_layer.py`). Reference layer; the service carries no status and applications to 2024. |
 | `data/eez.geojson` | South African EEZ (DMPR). |
 
 ## How the data is updated

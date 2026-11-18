@@ -66,7 +66,9 @@ body { font-family: "Helvetica Neue", Arial, Helvetica, sans-serif; }
 /* Info button (bottom right) */
 .about { background: rgba(248, 248, 248, .95); border-radius: 50%; width: 40px; height: 40px; display: flex;
   align-items: center; justify-content: center; font-size: 18px; box-shadow: 0 8px 32px rgba(0, 0, 0, .15); cursor: pointer; }
-.about.open { border-radius: 16px; width: 330px; height: auto; display: block; padding: 16px 18px; font-size: 13px; cursor: default; }
+.about.open { border-radius: 16px; width: 330px; height: auto; display: block; padding: 16px 18px; font-size: 13px; cursor: default;
+  max-height: calc(100vh - 90px); overflow-y: auto; overscroll-behavior: contain; position: relative; }
+.about-close { position: sticky; top: 0; float: right; border: 0; background: rgba(248, 248, 248, .95); font-size: 24px; line-height: 1; cursor: pointer; padding: 0 4px; color: #555; }
 .about h3 { margin: 0 0 8px; font-size: 15px; }
 .about p { margin: 6px 0; line-height: 1.4; }
 .about .disclaimer { background: rgba(255, 193, 7, .12); border-radius: 8px; padding: 8px 10px; margin-top: 8px; }

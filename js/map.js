@@ -1,4 +1,4 @@
-// West Coast mining map. Styling mirrors the current PTWC website map; the data comes from the
+// PTWC Interactive Map. Styling mirrors the current PTWC website map; the data comes from the
 // PTWC register (tools/build_public_map.py) and public reference layers.
 
 // Concession layers, top of the list = drawn on top. Colours are those of the current map.
@@ -99,8 +99,7 @@ const LIVE = [
     { label: "Wards", outline: [71], rgb: [134, 142, 150], width: 1, minZoom: 10 },
     { label: "Eskom medium-voltage lines and stations", ids: [113, 112], minZoom: 8 },
   ]},
-  { title: "Geology (DMPR, 1:1 million)", items: [
-    { label: "Geological units", ids: [92], minZoom: 8, opacity: .6 },
+  { title: "Geology (1:1 million)", items: [
     { label: "Geological lines, dykes and structures", ids: [90, 89, 93, 123, 91], minZoom: 8 },
   ]},
   { title: "Mining grid (DMPR)", items: [
@@ -170,7 +169,7 @@ function concessionPopup(p) {
 }
 
 // Friendlier names for the fields that recur across the DMPR reference layers
-const NICE = { cur_nme: "Name", site_type: "Type", d_dclar: "Declared", legal_stat: "Legal status", sitename: "Site",
+const NICE = { cur_nme: "Name", proc_doc: "Declaration (gazette)", site_type: "Type", d_dclar: "Declared", legal_stat: "Legal status", sitename: "Site",
   siteno: "Location", site_categ: "Category", grading: "Grading", declaratio: "Declaration", tfca: "Name",
   abbr: "Abbreviation", treatystat: "Treaty status", MUNICNAME: "Municipality", MAP_TITLE: "Name",
   DISTRICT_N: "District", DESCRIPTIO: "Description", LINKNAME: "Line", STATIONA: "From", STATIONB: "To",
@@ -179,7 +178,7 @@ function genericPopup(label, p) {
   const skip = /^(fid|objectid|shape|gis_area|latitude|longitude|eid|object id)/i;
   const rows = Object.entries(p).filter(([k, v]) => v !== null && v !== "" && v !== "Null" && !skip.test(k)).slice(0, 12);
   return `<table><tr><th colspan="2">${esc(label)}</th></tr>` +
-    rows.map(([k, v]) => `<tr><th>${esc(NICE[k] || k.replace(/_/g, " "))}</th><td>${esc(v)}</td></tr>`).join("") + "</table>";
+    rows.map(([k, v]) => `<tr><th>${esc(NICE[k] || k.replace(/_/g, " "))}</th><td>${/^https?:\/\/\S+$/.test(v) ? `<a href="${esc(v)}" target="_blank" rel="noopener">Open document</a>` : esc(v)}</td></tr>`).join("") + "</table>";
 }
 
 function highlight(e) {
@@ -357,7 +356,7 @@ CATS.forEach(c => {
     on => on ? catLayers[c.name].addTo(map) : catLayers[c.name].remove());
 });
 const styleCat = c => ({ pane: c.pane, color: c.stroke, weight: c.weight || 2, opacity: 1,
-  fill: c.fill !== "none", fillColor: c.fill, fillOpacity: 1 });
+  fill: c.fill !== "none", fillColor: c.fill, fillOpacity: .3 });
 
 // RIPL status layers: the PTWC register's areas regrouped by their RIPL status,
 // in process order. Off by default; drawn above the status layers when switched on.
@@ -405,7 +404,7 @@ RIPL.forEach(r => {
     on => on ? riplLayers[r.s].addTo(map) : riplLayers[r.s].remove());
 });
 const styleRipl = r => ({ pane: "ripl", color: r.c === "none" ? "#495057" : "rgba(0,0,0,.55)", weight: 1.5,
-  dashArray: r.c === "none" ? "4 3" : null, fill: r.c !== "none", fillColor: r.c, fillOpacity: .85 });
+  dashArray: r.c === "none" ? "4 3" : null, fill: r.c !== "none", fillColor: r.c, fillOpacity: .35 });
 
 pane("inactive", 425);
 const inactiveSection = section("Inactive rights and permits", false);
@@ -481,6 +480,47 @@ getJSON("concessions").then(data => {
   });
 });
 
+const alpha = (hex, a) => hex + Math.round(a * 255).toString(16).padStart(2, "0");
+// ---------------------------------------------------------------- geology coloured by rock type (off by default)
+// The 1:1 million geological map (Council for Geoscience, 2019) shows rock types, not minerals. Units are grouped into
+// rock-type classes (tools/build_geology_layer.py) so the colours show where the main host rocks lie, e.g. coal-bearing
+// rocks, iron-formation, mafic and ultramafic intrusives (chrome, platinum), granite, dolomite.
+const GEO_TITLE = "Geology (1:1 million)";
+const geoSection = section(GEO_TITLE, false);
+pane("geo", 402);
+note(geoSection, "Geological units of the 1:1 000 000 Geological Map of South Africa (Council for Geoscience, 2019), grouped into rock types and coloured. Tick the rock types you want to see; all are off until you do. Click a unit for its code and full description. This shows rock types, not mineral deposits, and is not for use at a larger scale than 1:1 million.");
+phaseHead(geoSection, "Rock types (coloured)");
+const geoRows = document.createElement("div");
+geoSection.append(geoRows);
+const geoGroups = {};
+const geoRenderer = L.canvas({ pane: "geo" });
+const geoData = getJSON("geology/units");
+let geoBuilt = null;
+const loadGeo = () => geoBuilt || (geoBuilt = geoData.then(data => {
+  const info = Object.fromEntries(data.classes.map(c => [c.key, c]));
+  data.features.forEach(f => {
+    const c = info[f.properties.c];
+    const style = { renderer: geoRenderer, pane: "geo", color: "#6c757d", weight: .3, fillColor: c.colour, fillOpacity: .6 };
+    L.geoJSON(f, { style }).eachLayer(l => {
+      l.bindPopup(genericPopup("Geological unit", { "Rock type": c.label, "Unit code": f.properties.code, Description: f.properties.rock,
+        Source: "Council for Geoscience, 1:1 000 000 Geological Map of South Africa (2019), via the DMPR Mining Licence System" }), { maxHeight: 300 });
+      l.addTo(geoGroups[f.properties.c]);
+    });
+  });
+  return data;
+}));
+geoData.then(data => {
+  data.classes.forEach(c => {
+    geoGroups[c.key] = L.featureGroup();
+    c.row = row(geoRows, c.label, sq(alpha(c.colour, .6), c.colour), false, async on => {
+      if (on) { await loadGeo(); geoGroups[c.key].addTo(map); } else geoGroups[c.key].remove();
+    });
+  });
+  const n = {};
+  data.features.forEach(f => { n[f.properties.c] = (n[f.properties.c] || 0) + 1; });
+  data.classes.forEach(c => { c.row.querySelector(".n").textContent = n[c.key] || ""; c.row.style.display = n[c.key] ? "" : "none"; });
+});
+
 // ---------------------------------------------------------------- biodiversity priority areas (off by default)
 // Critical Biodiversity Areas and Ecological Support Areas for the Western Cape (CapeNature's 2023
 // Western Cape Biodiversity Spatial Plan, Nov 2025 update) and the Northern Cape (2024). Simplified and dissolved by
@@ -495,24 +535,92 @@ const BIO = [
   { file: "ESA2", label: "Ecological Support Areas 2 (restore)", color: "#74c0fc",
     text: "Ecological Support Areas now in a degraded state, to be restored from other land use (Western Cape only)." },
 ];
-const alpha = (hex, a) => hex + Math.round(a * 255).toString(16).padStart(2, "0");
 const bioSection = section("Biodiversity priority areas (SANBI)", false);
 pane("bio", 410);
-note(bioSection, "Critical Biodiversity Areas (CBA) and Ecological Support Areas (ESA) for the whole Western Cape and the Northern Cape. Data: CapeNature and the Northern Cape Department of Agriculture, Environmental Affairs, Rural Development and Land Reform, from the South African National Biodiversity Institute (SANBI) Biodiversity GIS (CC BY-NC-SA 4.0). Simplified for the web: use the source data for site-level work.");
+const CITE_WC = "South African National Biodiversity Institute (SANBI). (2023). 2023 Western Cape Biodiversity Spatial Plan. November 2025 update. Pretoria: SANBI. Available at: https://bgis.sanbi.org [Accessed 4 November 2026].";
+const CITE_NC = "South African National Biodiversity Institute (SANBI). (2024). Northern Cape Critical Biodiversity Areas Map 2024. Pretoria: SANBI. Available at: https://bgis.sanbi.org [Accessed 4 November 2026].";
+const CITE_MARINE = "South African National Biodiversity Institute (SANBI). (2022). National Coastal and Marine Critical Biodiversity Area Map. Version 1.2. Pretoria: SANBI. Available at: https://cmr.mandela.ac.za/Research-Projects/EBSA-Portal [Accessed 18 November 2026].";
+note(bioSection, "Critical Biodiversity Areas (CBA) and Ecological Support Areas (ESA) for the Western and Northern Cape, from SANBI. Simplified for display: use the source data for site-level work. Full credit under the i button.");
 BIO.forEach(b => {
   let layer;
   const r = row(bioSection, b.label, sq(alpha(b.color, .45), b.color), false, async on => {
     if (!layer) {
       const data = await getJSON("biodiversity/" + b.file);
       layer = L.geoJSON(data, {
-        attribution: "Biodiversity data: CapeNature, NC DAEARDLR via SANBI Biodiversity GIS (CC BY-NC-SA 4.0)",
+        attribution: "Biodiversity data: SANBI (2023, 2024), Biodiversity GIS",
         style: { pane: "bio", color: b.color, weight: .6, fillColor: b.color, fillOpacity: .45 },
         onEachFeature: (f, l) => l.bindPopup(genericPopup(b.label, { Description: b.text, Source:
-          (f.properties.Province === "NC" ? "Northern Cape CBA Map 2024 (Northern Cape Department of Agriculture, Environmental Affairs, Rural Development and Land Reform)"
-            : "2023 Western Cape Biodiversity Spatial Plan, updated Nov 2025 (CapeNature)") + ", from SANBI's publicly available Biodiversity GIS data (CC BY-NC-SA 4.0)" }), { maxHeight: 300 }),
+          f.properties.Province === "NC" ? CITE_NC : CITE_WC }), { maxHeight: 300 }),
       });
     }
     on ? layer.addTo(map) : layer.remove();
+  });
+});
+
+// ---------------------------------------------------------------- marine CBA and ESA (off by default)
+const MARINE = [
+  { file: "CBA_N", label: "Marine CBA: Natural", color: "#1c7ed6",
+    text: "Marine Critical Biodiversity Areas in a natural or near-natural state: the areas needed to meet national biodiversity targets, to be kept in that state." },
+  { file: "CBA_R", label: "Marine CBA: Restore", color: "#7048e8",
+    text: "Marine Critical Biodiversity Areas that are degraded and need restoring to a natural or near-natural state." },
+  { file: "ESA", label: "Marine Ecological Support Areas", color: "#15aabf",
+    text: "Marine areas that support the functioning of Critical Biodiversity Areas and Marine Protected Areas." },
+];
+const marineSection = section("Marine biodiversity priority areas", false);
+pane("marine", 408);
+note(marineSection, "Marine CBA and ESA from the National Coastal and Marine CBA Map v1.2, from SANBI. Simplified for display: use the source data for site-level work. Full credit under the i button.");
+MARINE.forEach(b => {
+  let layer;
+  row(marineSection, b.label, sq(alpha(b.color, .4), b.color), false, async on => {
+    if (!layer) {
+      const data = await getJSON("marine/" + b.file);
+      layer = L.geoJSON(data, {
+        attribution: "Marine biodiversity data: SANBI (2022), National Coastal and Marine CBA Map v1.2",
+        style: { pane: "marine", color: b.color, weight: .6, fillColor: b.color, fillOpacity: .4 },
+        onEachFeature: (f, l) => l.bindPopup(genericPopup(b.label, { Description: b.text, Source: CITE_MARINE }), { maxHeight: 300 }),
+      });
+    }
+    on ? layer.addTo(map) : layer.remove();
+  });
+});
+
+// ---------------------------------------------------------------- renewable energy EIA applications (off by default)
+const REN = [
+  { key: "solar", label: "Solar (PV and CSP)", color: "#f59f00", techs: ["Solar PV", "Solar - CSP"] },
+  { key: "wind", label: "Wind", color: "#12b886", techs: ["Wind"] },
+  { key: "mixed", label: "Wind and solar combined", color: "#e8590c", techs: ["Wind and Solar PV", "Solar - CSP and Solar PV"] },
+  { key: "hydro", label: "Hydro", color: "#339af0", techs: ["Hydro"] },
+  { key: "bio", label: "Biomass and biofuels", color: "#82c91e", techs: ["Biomass_Biofuels"] },
+  { key: "pet", label: "Petroleum", color: "#868e96", techs: ["Petroleum"] },
+  { key: "wave", label: "Wave", color: "#22b8cf", techs: ["Wave"] },
+];
+const renSection = section("Renewable energy EIA applications (DFFE)", false);
+pane("ren", 406);
+note(renSection, "Applications for environmental authorisation for renewable energy projects, from the Department of Forestry, Fisheries and the Environment (DFFE) renewable energy EIA application database (outer boundaries only). It lists active and lapsed applications and is not updated for status: check the DFFE or the EAP for the current position. Not part of PTWC's mining register.");
+const renGroups = {};
+REN.forEach(g => {
+  renGroups[g.key] = L.featureGroup();
+  g.row = row(renSection, g.label, sq(alpha(g.color, .45), g.color), false, on => on ? renGroups[g.key].addTo(map) : renGroups[g.key].remove());
+});
+getJSON("renewable/reea").then(data => {
+  data.features.forEach(f => {
+    const p = f.properties;
+    const g = REN.find(x => x.techs.includes(p.TECHNOLOGY)) || REN[REN.length - 1];
+    const style = { pane: "ren", color: g.color, weight: 1, fillColor: g.color, fillOpacity: .45 };
+    L.geoJSON(f, { style }).eachLayer(l => {
+      l.bindPopup(genericPopup("Renewable energy EIA application", {
+        Project: p.PROJ_TITLE, Applicant: p.APPLICANT, Technology: p.Layer, "Capacity (MW)": p.MEGAWATT,
+        Province: p.PROVINCE, "District municipality": p.DISTRICT_M, "Local municipality": p.LOCAL_MUNI,
+        "EIA process": p.EIA_PROCES, "Application received": p.APP_RECEIV, "DFFE reference": p.DEA_REF, "NEAS reference": p.NEAS_REF, EAP: p.EAP,
+        Source: "DFFE renewable energy EIA application database (retrieved " + (data.retrieved || "") + ")" }), { maxHeight: 300 });
+      l.on({ mouseover: highlight, mouseout: () => l.setStyle(style) });
+      l.addTo(renGroups[g.key]);
+    });
+  });
+  REN.forEach(g => {
+    const n = renGroups[g.key].getLayers().length;
+    g.row.querySelector(".n").textContent = n;
+    g.row.style.display = n ? "" : "none";
   });
 });
 
@@ -532,7 +640,7 @@ getJSON("dmpr/sea_concessions").then(data => {
     const p = f.properties;
     const z = (String(p.Concession || "").trim().slice(-1).toLowerCase());
     const sz = SEA_ALL.find(x => x.z === z) || SEA_ALL[SEA_ALL.length - 1];
-    const style = { pane: "sea", color: sz.c, weight: 1.2, fillColor: sz.c, fillOpacity: .5 };
+    const style = { pane: "sea", color: sz.c, weight: 1.6, fillColor: sz.c, fillOpacity: .25 };
     L.geoJSON(f, { style }).eachLayer(l => {
       l.bindPopup(genericPopup("Sea concession", p), { maxHeight: 300 });
       l.on({ mouseover: highlight, mouseout: () => l.setStyle(style) });
@@ -548,6 +656,7 @@ getJSON("dmpr/sea_concessions").then(data => {
 
 // ---------------------------------------------------------------- background layers (as on the current map)
 const bg = section("Background", false);
+bg.before(geoSection);  // geology sits after the sea concessions and before Background in the panel
 const bgLayers = [
   { file: "towns", label: "Towns", on: true, sw: dotSw("#fff", "rgb(35,35,35)") },
   { file: "rivers", label: "Rivers", on: true, sw: lineSw("rgb(47,136,163)") },
@@ -633,7 +742,8 @@ REFERENCE.forEach(group => {
 // Live layers. Clicking the map (not one of our shapes) asks the DMPR server what is under the pointer.
 const liveOn = new Map();  // tile layer -> { ids, minZoom }
 LIVE.forEach(group => {
-  const s = section(group.title, false);
+  const s = group.title === GEO_TITLE ? geoSection : section(group.title, false);
+  if (group.title === GEO_TITLE) phaseHead(s, "Lines, dykes and structures (DMPR)");
   group.items.forEach(x => {
     const layer = x.query ? dmprShapes(x) : x.outline ? dmprOutlines(x.outline, x.rgb, x.width, x.minZoom) : dmprLive(x.ids, x.minZoom, x.opacity);
     const sw = x.query ? lineSw(x.color) : x.outline ? lineSw(`rgb(${x.rgb.join(",")})`) : '<span class="sw live"></span>';
@@ -693,16 +803,13 @@ const Download = L.Control.extend({
     L.DomEvent.disableClickPropagation(b);
     b.onclick = () => htmlToImage.toPng(document.getElementById("map"), {
       filter: n => !(n.classList && n.classList.contains("leaflet-control-container")),
-    }).then(url => { const a = document.createElement("a"); a.href = url; a.download = "west-coast-mining-map.png"; a.click(); })
+    }).then(url => { const a = document.createElement("a"); a.href = url; a.download = "ptwc-interactive-map.png"; a.click(); })
       .catch(err => alert("The image could not be created: " + err));
     return b;
   },
 });
 new Download().addTo(map);
 L.control.zoom({ position: "topleft" }).addTo(map);
-L.control.locate({ position: "topleft", locateOptions: { maxZoom: 14 } }).addTo(map);
-L.control.measure({ position: "topleft", primaryLengthUnit: "kilometers", secondaryLengthUnit: "meters",
-  primaryAreaUnit: "hectares", secondaryAreaUnit: "sqmeters" }).addTo(map);
 
 // ---------------------------------------------------------------- about box (bottom right)
 const About = L.Control.extend({
@@ -711,24 +818,28 @@ const About = L.Control.extend({
     const d = L.DomUtil.create("div", "about");
     const closed = '<i class="fas fa-info-circle"></i>';
     d.innerHTML = closed;
-    d.onmouseenter = () => {
+    d.title = "About this map";
+    L.DomEvent.disableClickPropagation(d);
+    L.DomEvent.disableScrollPropagation(d);
+    const open = () => {
       d.classList.add("open");
-      d.innerHTML = `<h3><i class="fas fa-info-circle"></i> About this map</h3>
+      d.title = "";
+      d.innerHTML = `<button type="button" class="about-close" aria-label="Close">&times;</button><h3><i class="fas fa-info-circle"></i> About this map</h3>
         <p>Prospecting, mining and related development applications and rights, compiled by Protect the
         West Coast. Each application or right appears once: PTWC's register (West Coast, Namakwa and
         offshore) is combined with every Western Cape record in the DMPR Mining Licence System, and each
         popup gives its Record ID and source, matching the PTWC public register.${updated ? ` Data updated ${esc(updated)}.` : ""}</p>
-        <p>Protected areas, buffers, heritage, infrastructure and boundaries cover the whole country and
+        <p>Protected and conservation area outlines, names and declaration documents: Department of Forestry, Fisheries and
+        the Environment (DFFE), South African Protected Areas Database (SAPAD) and Conservation Areas Database (SACAD)
+        public services. The buffers, heritage, infrastructure and boundaries cover the whole country and
         come from the DMPR Mining Licence System's public map service.${dmprUpdated ? ` Downloaded ${esc(dmprUpdated)}.` : ""}
         Layers marked "zoom" are drawn live from the DMPR server. The DMPR service credits the geology to the
         Council for Geoscience (1:1 000 000 Geological Map of South Africa, 2019) and the municipal boundaries to
         the Municipal Demarcation Board (2018).</p>
-        <p>Biodiversity priority areas (Critical Biodiversity Areas and Ecological Support Areas): data made publicly
-        available by the South African National Biodiversity Institute (SANBI) on its Biodiversity GIS website
-        (bgis.sanbi.org), licensed CC BY-NC-SA 4.0. Western Cape: 2023 Western Cape Biodiversity Spatial Plan, updated
-        November 2025 (CapeNature). Northern Cape: Critical Biodiversity Areas Map 2024 (Northern Cape Department of
-        Agriculture, Environmental Affairs, Rural Development and Land Reform). Simplified for display by Protect the
-        West Coast; use the source data for site-level decisions.</p>
+        <p>Biodiversity priority areas, simplified for display (use the source data for site-level decisions):<br>
+        ${esc(CITE_WC)}<br>${esc(CITE_NC)}<br>${esc(CITE_MARINE)}</p>
+        <p>Renewable energy EIA applications: Department of Forestry, Fisheries and the Environment (DFFE) renewable
+        energy EIA application database, outer boundaries only, not updated for status.</p>
         <p>Background: Natural Earth. Town positions: &copy; OpenStreetMap contributors.</p>
         <p>Original map design and data: One Ocean Hub Research Group, Department of Environmental and
         Geographical Science, University of Cape Town (M. Lambrecht). Further developed by Protect the West Coast.</p>
@@ -738,7 +849,11 @@ const About = L.Control.extend({
         and other public sources such as newspaper notices. This map is updated as information becomes
         available. The accuracy of the boundaries and the information shown cannot be guaranteed.</p></div>`;
     };
-    d.onmouseleave = () => { d.classList.remove("open"); d.innerHTML = closed; };
+    const close = () => { d.classList.remove("open"); d.scrollTop = 0; d.title = "About this map"; d.innerHTML = closed; };
+    d.addEventListener("click", e => {
+      if (!d.classList.contains("open")) open();
+      else if (e.target.closest(".about-close")) close();
+    });
     return d;
   },
 });

@@ -1,0 +1,490 @@
+[
+ {
+  "PTWC ID": "PTWC-0002",
+  "Code": "NC 30/5/1/2/2/10150 MR",
+  "Holder": "New Okiep Mining Company (Pty) Ltd",
+  "Status": "Unknown Status",
+  "Location": "NC 10150 MR",
+  "Province": "Northern Cape"
+ },
+ {
+  "PTWC ID": "PTWC-0003",
+  "Code": "NC30/5/1/2/2/10280MR",
+  "Holder": "Desert Star Uranium (Pty) Ltd",
+  "Status": "Mining Application",
+  "Location": "10280 MR - Goodhouse",
+  "Province": "Northern Cape"
+ },
+ {
+  "PTWC ID": "PTWC-0004",
+  "Code": "NC 30/5/1/2/2/10284 MR",
+  "Holder": "Tundratype (Pty) Ltd",
+  "Status": "Mining Application",
+  "Location": "Farms Buffelsfontein 515 and Others, Namaqualand",
+  "Province": "Northern Cape"
+ },
+ {
+  "PTWC ID": "PTWC-0005",
+  "Code": "NC 30/5/1/3/2/10358MP",
+  "Holder": "Sizisa Ukhanyo Trading 830 CC",
+  "Status": "Mining Permit Application",
+  "Location": "NC 10358 MP",
+  "Province": "Northern Cape"
+ },
+ {
+  "PTWC ID": "PTWC-0006",
+  "Code": "NC30/5/1/1/2/10455(688)PR",
+  "Holder": "Sizisa Ukhanyo Trading 830 CC",
+  "Status": "Prospecting Application",
+  "Location": "NC 10455(688)PR",
+  "Province": "Northern Cape"
+ },
+ {
+  "PTWC ID": "PTWC-0008",
+  "Code": "NC30/5/1/3/2/11352MP",
+  "Holder": "Golden Tropic Mining (Pty) Ltd",
+  "Status": "Mining Permit Application",
+  "Location": "NC 11352MP",
+  "Province": "Northern Cape"
+ },
+ {
+  "PTWC ID": "PTWC-0009",
+  "Code": "NC30/5/1/1/2/13464 PR",
+  "Holder": "Richwill Diamonds",
+  "Status": "Prospecting Right",
+  "Location": "Strandfontein 599",
+  "Province": "Northern Cape"
+ },
+ {
+  "PTWC ID": "PTWC-0011",
+  "Code": "NC30/5/1/1/2/14197PR",
+  "Holder": "Tshime Holdings (Pty) Ltd",
+  "Status": "Prospecting Right",
+  "Location": "NC 14197 PR",
+  "Province": "Northern Cape"
+ },
+ {
+  "PTWC ID": "PTWC-0015",
+  "Code": "NC30/5/1/1/2/14443PR",
+  "Holder": "Tsimbi Resources",
+  "Status": "Prospecting Application",
+  "Location": "14443PR",
+  "Province": "Northern Cape"
+ },
+ {
+  "PTWC ID": "PTWC-0018",
+  "Code": "NC 30/5/1/1/3/2/1/14513 PR",
+  "Holder": "Ritluka Resources (Pty) Ltd",
+  "Status": "Prospecting Right",
+  "Location": "NC 14513 PR",
+  "Province": "Northern Cape"
+ },
+ {
+  "PTWC ID": "PTWC-0020",
+  "Code": "NC30/5/1/3/2/14530PR",
+  "Holder": "Atola Trading Enterprise (Pty) Ltd",
+  "Status": "Prospecting Application",
+  "Location": "NC14530PR",
+  "Province": "Northern Cape"
+ },
+ {
+  "PTWC ID": "PTWC-0021",
+  "Code": "NC30/5/1/1/2/14532PR",
+  "Holder": "Samxon Engineering",
+  "Status": "Prospecting Application",
+  "Location": "14532PR",
+  "Province": "Northern Cape"
+ },
+ {
+  "PTWC ID": "PTWC-0022",
+  "Code": "NC 30/5/1/1/3/2/1/ (14536) PR",
+  "Holder": "Swayz Group (Pty) Ltd",
+  "Status": "Prospecting Right",
+  "Location": "14536 PR",
+  "Province": "Northern Cape"
+ },
+ {
+  "PTWC ID": "PTWC-0027",
+  "Code": "NC30/5/1/1/2/ 14602 PR",
+  "Holder": "Samxon Engineering",
+  "Status": "Prospecting Application",
+  "Location": "14602 PR Kuruman",
+  "Province": "Northern Cape"
+ },
+ {
+  "PTWC ID": "PTWC-0030",
+  "Code": "NC30/5/1/1/2/ 14675 PR",
+  "Holder": "Samxon Engineering",
+  "Status": "Prospecting Application",
+  "Location": "14675 PR Churchill",
+  "Province": "Northern Cape"
+ },
+ {
+  "PTWC ID": "PTWC-0044",
+  "Code": "NC 30/5/1/1/2/14777 PR",
+  "Holder": "Epang Base Minerals (Pty) Ltd",
+  "Status": "Withdrawn, Lapsed or Expired",
+  "Location": "14777 PR - Springbok",
+  "Province": "Northern Cape"
+ },
+ {
+  "PTWC ID": "PTWC-0045",
+  "Code": "NC 30/5/1/1/2/14778 PR",
+  "Holder": "Epang Base Minerals (Pty) Ltd",
+  "Status": "Withdrawn, Lapsed or Expired",
+  "Location": "14778 PR",
+  "Province": "Northern Cape"
+ },
+ {
+  "PTWC ID": "PTWC-0046",
+  "Code": "NC 30/5/1/1/2/14779 PR",
+  "Holder": "Epang Base Minerals (Pty) Ltd",
+  "Status": "Withdrawn, Lapsed or Expired",
+  "Location": "14779 PR",
+  "Province": "Northern Cape"
+ },
+ {
+  "PTWC ID": "PTWC-0049",
+  "Code": "NC30/5/1/1/2/14829PR",
+  "Holder": "Tsimbi Resources",
+  "Status": "Prospecting Application",
+  "Location": "14829PR",
+  "Province": "Northern Cape"
+ },
+ {
+  "PTWC ID": "PTWC-0050",
+  "Code": "NC 30/5/1/1/2/14835 PR",
+  "Holder": "Mansena Lithium and Rare Earth Minerals (Pty) Ltd",
+  "Status": "Prospecting Application",
+  "Location": "14835 PR",
+  "Province": "Northern Cape"
+ },
+ {
+  "PTWC ID": "PTWC-0051",
+  "Code": "NC30/5/1/1/2/14838PR",
+  "Holder": "Triple Glimmer Project Management and Consulting (Pty) Ltd",
+  "Status": "Prospecting Application",
+  "Location": "NC 14838 PR",
+  "Province": "Northern Cape"
+ },
+ {
+  "PTWC ID": "PTWC-0052",
+  "Code": "NC 30/5/1/1/2/14839 PR",
+  "Holder": "Adistra 11 (Pty) Ltd",
+  "Status": "Prospecting Application",
+  "Location": "NC 14839 PR",
+  "Province": "Northern Cape"
+ },
+ {
+  "PTWC ID": "PTWC-0053",
+  "Code": "NC 30/5/1/1/2/14843 PR",
+  "Holder": "Bluu Resources (Pty) Ltd",
+  "Status": "Prospecting Application",
+  "Location": "14843 PR - Lange Berg No. 271, Namaqualand",
+  "Province": "Northern Cape"
+ },
+ {
+  "PTWC ID": "PTWC-0054",
+  "Code": "NC 30/5/1/1/2/14847 PR",
+  "Holder": "Korridor Minerale (Pty) Ltd",
+  "Status": "Prospecting Application",
+  "Location": "14847 PR",
+  "Province": "Northern Cape"
+ },
+ {
+  "PTWC ID": "PTWC-0056",
+  "Code": "NC 30/5/1/1/2/14856 PR",
+  "Holder": "Nhlaluko and Lala Projects (Pty) Ltd",
+  "Status": "Prospecting Application",
+  "Location": "Farm Klip Bakken No. 68, Kenhardt (c. 20 km SW of Kakamas)",
+  "Province": "Northern Cape"
+ },
+ {
+  "PTWC ID": "PTWC-0057",
+  "Code": "NC 30/5/1/1/2/14872 PR",
+  "Holder": "Aurex Mining (Pty) Ltd",
+  "Status": "Prospecting Application",
+  "Location": "14872 PR - Bodabeep No. 230, Sweloor No. 232 & Plaas No. 632, Namaqualand",
+  "Province": "Northern Cape"
+ },
+ {
+  "PTWC ID": "PTWC-0058",
+  "Code": "NC 30/5/1/1/2/14915 PR",
+  "Holder": "Lanele Resources (Pty) Ltd",
+  "Status": "Prospecting Application",
+  "Location": "Kenhardt, farm Krom puts 180 and farm Rooi Berg 375",
+  "Province": "Northern Cape"
+ },
+ {
+  "PTWC ID": "PTWC-0059",
+  "Code": "NC 30/5/1/2/ 14934 PR",
+  "Holder": "Adistra 11 (Pty) Ltd",
+  "Status": "Prospecting Application",
+  "Location": "NC 14934 PR Namaqualand",
+  "Province": "Northern Cape"
+ },
+ {
+  "PTWC ID": "PTWC-0061",
+  "Code": "NC 30/5/1/1/2/14937 PR",
+  "Holder": "Bhele Elihle Resources (Pty) Ltd",
+  "Status": "Prospecting Application",
+  "Location": "Portions 7, 8, 9, 10, 11 and RE of Farm Pella Mission 39, Namaqualand",
+  "Province": "Northern Cape"
+ },
+ {
+  "PTWC ID": "PTWC-0062",
+  "Code": "NC 30/5/1/1/2/14938 PR",
+  "Holder": "Bhele Elihle Resources (Pty) Ltd",
+  "Status": "Prospecting Application",
+  "Location": "Namaqualand",
+  "Province": "Northern Cape"
+ },
+ {
+  "PTWC ID": "PTWC-0064",
+  "Code": "NC 30/5/1/1/2/14990 PR",
+  "Holder": "Keulen Testing and Inspection (Pty) Ltd",
+  "Status": "Prospecting Application",
+  "Location": "NC 14990 PR",
+  "Province": "Northern Cape"
+ },
+ {
+  "PTWC ID": "PTWC-0065",
+  "Code": "NC TEMP/EIA/2026/DEA/0000254 RE",
+  "Holder": "Globeleq Development Southern Africa (Pty) Ltd",
+  "Status": "Other Developments (EA)",
+  "Location": "NC 00254 RE",
+  "Province": "Northern Cape"
+ },
+ {
+  "PTWC ID": "PTWC-0066",
+  "Code": "WC 3108/26 MSP",
+  "Holder": "Minrite (Pty) Ltd",
+  "Status": "Other Developments (EA)",
+  "Location": "WC 3108/26 Vredendal Mineral Separation Plant",
+  "Province": "Western Cape"
+ },
+ {
+  "PTWC ID": "PTWC-0068",
+  "Code": "",
+  "Holder": "Joetsie Steenwerke",
+  "Status": "Unknown Status",
+  "Location": "Closure Applications",
+  "Province": ""
+ },
+ {
+  "PTWC ID": "PTWC-0069",
+  "Code": "",
+  "Holder": "Phelan Solar Project",
+  "Status": "Other Developments (EA)",
+  "Location": "Hopefield 1.6 GW PV Solar Energy Facility: RE Farm Portugeesche Fontyn 167",
+  "Province": "Western Cape"
+ },
+ {
+  "PTWC ID": "PTWC-0074",
+  "Code": "",
+  "Holder": "Tyolomnqa Sands - Vendicom Minerals Beneficiation Group (Pty) Ltd",
+  "Status": "Unknown Status",
+  "Location": "EC Heavy Minerals + Sands",
+  "Province": "Eastern Cape"
+ },
+ {
+  "PTWC ID": "PTWC-0075",
+  "Code": "WC 30/5/1/2/2/10025 MR; WC 30/5/1/2/3/2/1 (312) EM",
+  "Holder": "Veldrift Salt Company (Pty) Ltd",
+  "Status": "Mining Application",
+  "Location": "near Velddrif",
+  "Province": "Western Cape"
+ },
+ {
+  "PTWC ID": "PTWC-0100",
+  "Code": "WC 99 MR",
+  "Holder": "Tronox",
+  "Status": "Unknown Status",
+  "Location": "Tronox Namakwa Sands West Mine Residue Storage Facility 7 (WRSF 7), Western Cape",
+  "Province": "Western Cape"
+ },
+ {
+  "PTWC ID": "PTWC-0101",
+  "Code": "11343 MP",
+  "Holder": "Green Earth Resources",
+  "Status": "Mining Permit Application",
+  "Location": "11343 MP",
+  "Province": ""
+ },
+ {
+  "PTWC ID": "PTWC-0102",
+  "Code": "11344 MP",
+  "Holder": "Tushiya Minerals (Pty) Ltd",
+  "Status": "Mining Permit Application",
+  "Location": "11344 MP",
+  "Province": ""
+ },
+ {
+  "PTWC ID": "PTWC-0108",
+  "Code": "NC30/5/1/1/2/12378PR",
+  "Holder": "Saxon Heavy Minerals",
+  "Status": "Unknown Status",
+  "Location": "Nuttabooi 199",
+  "Province": "Northern Cape"
+ },
+ {
+  "PTWC ID": "PTWC-0112",
+  "Code": "NC30/5/1/1/2/13744PR",
+  "Holder": "Zephyrion",
+  "Status": "Prospecting Application",
+  "Location": "Hondeklip Bay",
+  "Province": "Northern Cape"
+ },
+ {
+  "PTWC ID": "PTWC-0117",
+  "Code": "NC523MR",
+  "Holder": "West Coast Resources",
+  "Status": "Unknown Status",
+  "Location": "Brand se Baai, Eiland Punt Zuid 550; Graauw Duinen 152; Karoetjies Kop 150; Klein Kogel Fontein 561; Klipvlei Karoo Kop 153; Rietfontein Ext 151; Strandfontein 559; Titiesbaai 560",
+  "Province": "Northern Cape"
+ },
+ {
+  "PTWC ID": "PTWC-0207",
+  "Code": "WC30/5/1/1/2/10276PR",
+  "Holder": "Mineral Sands Resources",
+  "Status": "Prospecting Right",
+  "Location": "Sea Concession 12a, Offshore",
+  "Province": "Western Cape"
+ },
+ {
+  "PTWC ID": "PTWC-0242",
+  "Code": "WC30/5/1/1/2/10345PR",
+  "Holder": "Cape Zircon",
+  "Status": "Withdrawn, Lapsed or Expired",
+  "Location": "South of Olifants",
+  "Province": "Western Cape"
+ },
+ {
+  "PTWC ID": "PTWC-0243",
+  "Code": "WC30/5/1/1/2/10346PR",
+  "Holder": "Cape Zircon",
+  "Status": "Withdrawn, Lapsed or Expired",
+  "Location": "South of Olifants",
+  "Province": "Western Cape"
+ },
+ {
+  "PTWC ID": "PTWC-0288",
+  "Code": "WC30/5/1/1/2/10390PR",
+  "Holder": "Tambuka Resources (Pty) Ltd",
+  "Status": "Application Refused",
+  "Location": "Obeeb 8 Ptns 3, 6 & 10 (3)",
+  "Province": "Western Cape"
+ },
+ {
+  "PTWC ID": "PTWC-0289",
+  "Code": "WC30/5/1/1/2/10392PR",
+  "Holder": "Tambuka Resources (Pty) Ltd",
+  "Status": "Application Refused",
+  "Location": "Komkans 141",
+  "Province": "Western Cape"
+ },
+ {
+  "PTWC ID": "PTWC-0299",
+  "Code": "WC30/5/1/1/2/10435PR",
+  "Holder": "Cienth",
+  "Status": "Application Refused",
+  "Location": "Bredasdorp",
+  "Province": "Western Cape"
+ },
+ {
+  "PTWC ID": "PTWC-0301",
+  "Code": "WC30/5/1/1/2/10440PR",
+  "Holder": "Tlou Exploration",
+  "Status": "Prospecting Right",
+  "Location": "Ptn 1 & RE farm 1043, Ptn 12 & RE of portion 7 Langeberg 185",
+  "Province": "Western Cape"
+ },
+ {
+  "PTWC ID": "PTWC-0302",
+  "Code": "WC30/5/1/1/2/10442PR",
+  "Holder": "Kheprisian",
+  "Status": "Unknown Status",
+  "Location": "Vanrhynsdorp",
+  "Province": "Western Cape"
+ },
+ {
+  "PTWC ID": "PTWC-0461",
+  "Code": "DEA&DP 16/3/3/6/7/1/F4/23/3145/26",
+  "Holder": "Greenvolts (Pty) Ltd",
+  "Status": "Other Developments (EA)",
+  "Location": "Uyekraal 650 MW solar PV and industrial development; farm Uyekraal 1/189, about 4.6 km east of Saldanha Bay, off the R27 (295 ha)",
+  "Province": "Western Cape"
+ },
+ {
+  "PTWC ID": "PTWC-0463",
+  "Code": "NC 30/5/1/1/3/2/1/14537 PR",
+  "Holder": "Ritluka Resources (Pty) Ltd",
+  "Status": "Prospecting Right",
+  "Location": "Farm Brakfontein 133, magisterial district of Namaqualand",
+  "Province": "Northern Cape"
+ },
+ {
+  "PTWC ID": "PTWC-0464",
+  "Code": "NC 30/5/1/1/3/2/1/14592 PR",
+  "Holder": "Keulen Testing and Inspection (Pty) Ltd",
+  "Status": "Prospecting Right",
+  "Location": "Farm Selsden 464, magisterial district of Kuruman",
+  "Province": "Northern Cape"
+ },
+ {
+  "PTWC ID": "PTWC-0465",
+  "Code": "NC 30/5/1/1/3/2/14296 PR",
+  "Holder": "Tshepa Basadi Minerals (Pty) Ltd",
+  "Status": "Prospecting Right",
+  "Location": "Farm Rooisand 387 and portion of Spitskop 615, administrative district of Kenhardt",
+  "Province": "Northern Cape"
+ },
+ {
+  "PTWC ID": "PTWC-0466",
+  "Code": "NC 47807 WU; NC 47744 WU",
+  "Holder": "Kalkpoort Soutwerke CC & Saamwerk Soutwerke (Pty) Ltd",
+  "Status": "Other Developments (EA)",
+  "Location": "WU 47807: portions 5, 6, 7, 9 and 10 of farm Norokei 317; WU 47744: remainder of farm Eenzaamheid 626; ZF Mgcawu District",
+  "Province": "Northern Cape"
+ },
+ {
+  "PTWC ID": "PTWC-0467",
+  "Code": "NC 30/5/1/1/2/14907 PR",
+  "Holder": "Rayon Holdings (Pty) Ltd",
+  "Status": "Prospecting Application",
+  "Location": "Farm Banghoek 17, administrative district of Herbert",
+  "Province": "Northern Cape"
+ },
+ {
+  "PTWC ID": "PTWC-0468",
+  "Code": "NC 30/5/1/3/2/13885 PR",
+  "Holder": "Inala Group Holding (Pty) Ltd",
+  "Status": "Prospecting Right",
+  "Location": "Portions of farms Esteen Pan 60, Geluk Pan 61, Kraanvogel Pan 62, Zavala Pan 108, Stomp Oor 109, Zon Onder 110 and Wegsteek; administrative district of Prieska",
+  "Province": "Northern Cape"
+ },
+ {
+  "PTWC ID": "PTWC-0469",
+  "Code": "NC 30/5/1/1/2/14929 PR",
+  "Holder": "Business Venture Investments No. 1805 (Pty) Ltd",
+  "Status": "Prospecting Application",
+  "Location": "Farm Steenkamp 354, administrative district of Gordonia (same notice as 14529 PR)",
+  "Province": "Northern Cape"
+ },
+ {
+  "PTWC ID": "PTWC-0471",
+  "Code": "NC 30/5/1/1/2/14891 PR",
+  "Holder": "NiCuLi Discoveries (Pty) Ltd",
+  "Status": "Other Developments (EA)",
+  "Location": "Portions of Liliefontein 614, Die Plaas 650, Brakfontein 431, Skuins Kraal Oos 430, Wilgehout Fontein 426, Skuins Kraal 427, Skuins Kraal Wes 432, Krommefontein 433, Zand Kraal 434, De Klipheuvel 435, Groenriviers Valley 504, Sabies 505, Kamsberg 645, Bloukraans 429, Kliphoek 514, Dikdoorn 535, Waterval 536, Groot Brakfontein 507, Brakfontein 508 (notice: 'Biakfontein'), Brakputs 509, Rondabel 542, Nooitvergeten 657, De Dam 541, Brakfontein 533, Varsfontein 554, Brakfontein 555; Kamiesberg LM, Namaqualand district. Allen: overlaps Zandkopsdrift MR, NC 12230 PR and NC 14709 PR",
+  "Province": "Northern Cape"
+ },
+ {
+  "PTWC ID": "PTWC-0472",
+  "Code": "WC 19/1/1/1/2/15 PR",
+  "Holder": "Opeo Resources (Pty) Ltd",
+  "Status": "Prospecting Application",
+  "Location": "Prospecting right and environmental authorisation; Portion 1 of the farm Kersbos Vlei 133, Vanrhynsdorp district (Matzikama LM)",
+  "Province": "Western Cape"
+ }
+]
